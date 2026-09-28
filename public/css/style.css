@@ -1,0 +1,22 @@
+.paginator {
+    margin: 3em auto 1em auto;
+    width: fit-content;
+    text-align: center;
+}
+
+.paginator svg {
+    width: 1em;
+    height: 1em;
+    margin: 0 0.5em;
+    cursor: pointer;
+}
+
+main{
+    text-align: center;
+    margin: auto;
+    width: fit-content;
+}
+
+header{
+    text-align: center;
+}

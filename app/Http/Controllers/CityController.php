@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\City;
+use App\Models\County;
 use Illuminate\Http\Request;
 
 class CityController extends Controller
@@ -10,12 +11,23 @@ class CityController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $cities = City::with('county')->get();
+        $query = City::query();
+
+        if ($request->filled('county')){
+            $query->where('id_county', '=', $request->county);
+        }
+        if ($request->filled('search')){
+            $query->where('name', 'LIKE', '%'.$request->search.'%');
+        }
+
+        $cities = $query->paginate(20)->withQueryString();
+
+        $counties = County::all();
 
 
-        return view('cities.index', compact('cities'));
+        return view('cities.index', compact('cities', 'counties'));
 
     }
 
@@ -24,7 +36,9 @@ class CityController extends Controller
      */
     public function create()
     {
-        //
+        $counties = County::all();
+
+        return view('cities.create', compact('counties'));
     }
 
     /**
@@ -32,7 +46,19 @@ class CityController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            "name" => "required|min:3|string",
+            "population" => "required|int",
+        ]);
+
+        $city = new City();
+        $city->zip_code = $request->zip_code;
+        $city->name = $request->name;
+        $city->population = $request->population;
+        $city->id_county = $request->id_county;
+        $city->save();
+
+        return redirect()->route('cities.index')->with('success', "{$city->name} sikeresen hozzáadva.");
     }
 
     /**
@@ -40,7 +66,9 @@ class CityController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $city = City::find($id);
+
+        return view('cities.show', compact('city'));
     }
 
     /**
@@ -48,7 +76,10 @@ class CityController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $city = City::find($id);
+        $counties = County::all();
+
+        return view('cities.edit', compact('city', 'counties'));
     }
 
     /**
@@ -56,7 +87,14 @@ class CityController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $city = City::find($id);
+        $city->zip_code = $request->zip_code;
+        $city->name = $request->name;
+        $city->population = $request->population;
+        $city->id_county = $request->id_county;
+        $city->save();
+
+        return redirect()->route('cities.index')->with('success', "$request->name sikeresen szerkesztve");
     }
 
     /**
@@ -64,6 +102,9 @@ class CityController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        $city = City::find($id);
+        $city->delete();
+
+        return redirect()->route('cities.index')->with('success', "$city->name sikeresen törölve.");
     }
 }

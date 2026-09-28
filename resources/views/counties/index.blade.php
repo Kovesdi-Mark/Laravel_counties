@@ -1,10 +1,13 @@
 @extends('layout')
 
+@section('title')
+<h1>Megyék</h1>
+@endsection
+
 @section('content')
 
-<h1>Counties Index</h1>
 
-<a href="{{ route('counties.create') }}">Új megye</a>
+<a href="{{ route('counties.create') }}">Új megye létrehozása</a>
 
 @if (session('success'))
     <div>{{ session('success') }}</div>

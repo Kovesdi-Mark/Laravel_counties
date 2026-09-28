@@ -8,10 +8,16 @@
     <title>Postoffice</title>
 </head>
 <body>
-    <header></header>
+    <header>
+        @yield('title')
+        <a href="{{ route('cities.index') }}">Városok</a>
+        <a href="{{ route('counties.index') }}">Megyék</a>
+    </header>
     <main>
         @yield('content')
     </main>
-    <footer></footer>
+    <footer>
+        
+    </footer>
 </body>
 </html>

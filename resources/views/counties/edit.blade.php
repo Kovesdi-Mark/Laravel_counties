@@ -1,8 +1,10 @@
 @extends('layout')
 
-@section('content')
-
+@section('title')
 <h1>Megye szerkesztése</h1>
+@endsection
+
+@section('content')
 
 @error('name')
 <div>{{ $message }}</div>
