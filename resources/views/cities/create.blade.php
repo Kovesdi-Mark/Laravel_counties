@@ -6,6 +6,10 @@
 
 @section('content')
 
+@error('name')
+<div>{{ $message }}</div>
+@enderror
+
 <a href="{{ route('cities.index')}}">Vissza</a>
 
 <form action="{{ route('cities.store')}}" method="POST">

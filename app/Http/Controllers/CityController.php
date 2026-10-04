@@ -87,6 +87,11 @@ class CityController extends Controller
      */
     public function update(Request $request, string $id)
     {
+        $request->validate([
+            "name" => "required|min:3|string",
+            "population" => "required|int",
+        ]);
+
         $city = City::find($id);
         $city->zip_code = $request->zip_code;
         $city->name = $request->name;
